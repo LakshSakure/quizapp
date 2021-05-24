@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuizApp {% block title %} {% endblock title %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="alert alert-dark" style="position: sticky;top: 0; z-index: 99;">
+    <div class="row">
+        <div class="col-sm-4"><b>Quiz Name: </b>{{ quiz.quiz_name }}</div>
+        <div class="col-sm-4"><b>Time left: </b> <span id="time"></span></div>
+        <div class="col-sm-4"><a href="/logout" class="btn btn-sm btn-hover btn-danger float-right"> => Logout </a> </div>
+
+ </div>
+
+</div>
+
+    <div class="row m-3" id="test_container">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+                {% for q in quiz_questions %}
+                <div class="card card-light">
+                    <div class="card-body">
+                        <h6>{{ q.id }} {{ q.question }}</h6>
+                        <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'a')" name = "q{{ q.id }}" value = "{{q.options1}}" id = "q1a">   a. {{ q.options1 }}<br><br>
+                        <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'b')" name = "q{{ q.id }}" value = "{{q.options2}}" id = "q1b" >   b. {{ q.options2 }}<br><br>
+                        <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'c')" name = "q{{ q.id }}" value = "{{q.options3}}" id = "q1c">   c. {{ q.options3 }}<br><br>
+                        <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'd')" name = "q{{ q.id }}" value = "{{q.options4}}" id = "q1d">   d. {{ q.options4 }}<br><br>
+                    </div>
+                </div>
+            <div id="ans_{{q.id}}">
+
+            </div>
+                {% endfor %}
+            <button class="float-right mt-3 btn btn-success text-hover" type="submit" onclick="endTest()"> Submit Test</button>
+        </div>
+
+
+    </div>
+
+
+<script>
+$(document).ready(() => {
+  local_time = localStorage.getItem("time_left");
+
+  if(local_time == "" || local_time == null ) {
+  local_time = 10;
+  localStorage.setItem("time_left", local_time);
+  }
+   $('#time').html(localStorage.getItem("time_left")+":" + 00);
+   startTimer();
+});
+
+function startTimer() {
+  var presentTime = document.getElementById('time').innerHTML;
+  var timeArray = presentTime.split(/[:]+/);
+  var m = timeArray[0];
+  var s = checkSecond((timeArray[1] - 1));
+  if(s==59) { m=m-1 }
+  if(m < 0) {
+    window.location.href = "/test-result";
+  }
+
+  document.getElementById('time').innerHTML =
+    m + ":" + s;
+   localStorage.setItem("time_left", m + ":" + s);
+  setTimeout(startTimer, 1000);
+}
+
+function checkSecond(sec) {
+  if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+  if (sec < 0) {sec = "59"};
+  return sec;
+}
+
+function checkans(val, id, option_no)
+{
+   if(localStorage.getItem("question"+id) !="" && !localStorage.getItem("question"+id))
+   {
+        $.ajax({
+         url: '/checkans',
+         dataType: 'json',
+         method: 'POST',
+         headers: {
+                    "X-CSRFToken": '{{csrf_token }}'
+                },
+          data: {option_no: option_no, opt: val, q: id},
+          success:(res) => {
+               if(res.c == 1)
+               {
+                    $('#ans_'+id).attr({ 'class':'alert alert-success'});
+                    $('#ans_'+id).html("Correct Answer: "+res.c_option);
+                    $('#ans_'+id).show();
+               }
+               else
+               {
+                    $('#ans_'+id).attr({ 'class':'alert alert-danger'});
+                    $('#ans_'+id).html("Your Answer: "+option_no+". "+val+"<br /> Correct Answer is: "+res.c_option);
+                    $('#ans_'+id).show();
+               }
+
+               localStorage.setItem("question"+id, id);
+          }
+       });
+   } else {
+   alert("Your answer already recorded");
+   }
+}
+
+ function endTest()
+ {
+    var ack = confirm("Are you sure to submit this test");
+    if(ack)
+    {
+        window.location.href = "/test-result";
+
+    }
+ }
+
+
+</script>
+
+
+<footer style="background-color: #000; height: 100px; width:100%;">
+    <div class="text-center text-white pt-5">Developed By Laksh Sakure Patil.</div>
+    <i class="text-center text-white d-block">Copyright @2021</i>
+</footer>
+
+</body>
+</html>

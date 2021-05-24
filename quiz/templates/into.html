@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuizApp</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<h1 class="font-weigth-bold text-center mb-3 text-primary">Simple Django Quiz App</h1>
+<hr/>
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="text-center">
+            <h1><a href="/login" class="btn btn-success btn-hover" >Get Started</a></h1>
+        </div>
+        <hr />
+        <ul>
+            <li>1. Quiz App made by Django</li>
+            <li>2. School/Colleges, Student( exist only one for demo purpose) already registerd in our app and You can serve it using following credentials:
+
+                we have saved only one student right now, this is just demo project completed in 2 days
+                <br />
+                <b>Username: </b> web.laksh7@gmail.com <br />
+                <b>Password: </b> 123456
+            </li>
+
+            <li>3. If You like the app, please leave your feedback below
+                <form method="post" action="/feedback">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Your Name: </label>
+                        <input type="text" name="f_name" class="form-control" id="f_name" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Feedback: </label>
+                        <textarea type="text" name="feedback" class="form-control" id="feedback" required > </textarea>
+                    </div>
+
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-success btn-hover " value="Save" />
+                    </div>
+
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<footer style="background-color: #000; height: 100px; width:100%;">
+    <div class="text-center text-white pt-5">Developed By Laksh Sakure Patil.</div>
+    <i class="text-center text-white d-block">Copyright @2021</i>
+</footer>
+
+</body>
+</html>

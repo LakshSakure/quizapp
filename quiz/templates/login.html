@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuizApp</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<script> localStorage.clear(); </script>
+<h1 class="font-weigth-bold text-center mb-3 text-primary"> QuizApp: Login</h1>
+<hr/>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 p-5">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn-primary text-center" value="Login">
+        </form>
+        {% if errMsg %}
+             <div class="alert alert-danger mt-2">{{ errMsg }}</div>
+        {% endif %}
+
+
+          <div class="card mt-5 ">
+        <div class="card-body ">
+             <b>Login Using following credentials: we have saved only one student right now, this is just demo project completed in 2 days.</b> <br/>
+            <b>Username: </b> web.laksh7@gmail.com <br />
+                    <b>Password: </b> 123456 <br />
+            <a href="/" class="text-center  mt-3 font-weight-bold"> Go back to Intro</a>
+        </div>
+
+    </div>
+    </div>
+
+</div>
+
+
+
+<footer style="background-color: #000; height: 100px; width:100%;">
+    <div class="text-center text-white pt-5">Developed By Laksh Sakure Patil.</div>
+    <i class="text-center text-white d-block">Copyright @2021</i>
+</footer>
+
+</body>
+</html>
