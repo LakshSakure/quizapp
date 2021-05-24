@@ -30,7 +30,7 @@
                 {% for q in quiz_questions %}
                 <div class="card card-light">
                     <div class="card-body">
-                        <h6>{{ q.id }} {{ q.question }}</h6>
+                        <h6>{{ forloop.counter }}. {{ q.question }}</h6>
                         <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'a')" name = "q{{ q.id }}" value = "{{q.options1}}" id = "q1a">   a. {{ q.options1 }}<br><br>
                         <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'b')" name = "q{{ q.id }}" value = "{{q.options2}}" id = "q1b" >   b. {{ q.options2 }}<br><br>
                         <input type = "radio"  onchange="checkans(this.value, {{ q.id }}, 'c')" name = "q{{ q.id }}" value = "{{q.options3}}" id = "q1c">   c. {{ q.options3 }}<br><br>
