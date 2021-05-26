@@ -69,7 +69,6 @@ def CheckAns(request):
 def checkScore(request):
     if 'score' in request.session:
         score = request.session.get('score')
-        total_questions = request.get('total_questions')
         request.session['score'] = 0
         return render(request, 'result.html', {'score': score, 'total_questions': total_questions});
     else:
