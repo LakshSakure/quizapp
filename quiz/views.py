@@ -62,16 +62,14 @@ def CheckAns(request):
                     return JsonResponse(res, status=200)
         except Question.DoesNotExist:
             pass
-
     res = {"error": 1, 'c': '0', 'q': q_id, 'c_option': question.correct_option}
     return JsonResponse(res, status=200)
 
 def checkScore(request):
     if 'score' in request.session:
         score = request.session.get('score')
-        total_questions = request.get('total_questions')
         request.session['score'] = 0
-        return render(request, 'result.html', {'score': score, 'total_questions': total_questions});
+        return render(request, 'result.html', {'score': score});
     else:
         return HttpResponse("HTTP 403: Forbidden", status=403)
 
@@ -82,7 +80,6 @@ def testPlay(request, id):
             quiz = Quiz.objects.get(id=id)  # geidtting Quiz details
             quiz_questions = Question.objects.filter(quiz_name=quiz.id)
             request.session['score'] = 0;
-            request.session['total_questions'] = quiz_questions.count()
             return render(request, 'quizes.html', {'quiz_questions': quiz_questions, 'quiz': quiz})
         except:
             pass
