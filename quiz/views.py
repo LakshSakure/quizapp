@@ -70,6 +70,7 @@ def checkScore(request):
     if 'score' in request.session:
         score = request.session.get('score')
         request.session['score'] = 0
+        total_questions = request.session.get('total_questions')
         return render(request, 'result.html', {'score': score, 'total_questions': total_questions});
     else:
         return HttpResponse("HTTP 403: Forbidden", status=403)
